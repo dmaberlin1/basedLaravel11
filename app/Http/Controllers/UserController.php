@@ -19,7 +19,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        $name='demo name';
+        return view('user.create',compact('name'));
     }
 
     /**
