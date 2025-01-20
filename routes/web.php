@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\ProductController;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
@@ -24,7 +25,10 @@ Route::prefix('products')->group(function (){
 
 Route::prefix('user')->group(function (){
    Route::get('/register',[\App\Http\Controllers\UserController::class,'create'])->name('user.create');
+   Route::post('/register',[\App\Http\Controllers\UserController::class,'store'])->name('user.store');
+//       ->withoutMiddleware(VerifyCsrfToken::class);
    Route::get('/login',[\App\Http\Controllers\UserController::class,'login'])->name('user.login');
 });
 Route::get('/contact',[\App\Http\Controllers\ContactController::class,'contact'])->name('user.contact');
+Route::get('/posts',[\App\Http\Controllers\PostController::class,'index'])->name('posts.index');
 
