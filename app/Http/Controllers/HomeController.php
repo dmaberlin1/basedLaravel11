@@ -6,12 +6,48 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $request->session()->put('key','hello, World');
+        session(['key2'=>'hello, world 2']);
+        dump($request->session()->all());
+        dump(session('key2'));
+        dump(session()->all());
+        dump(session()->only(['username','email']));
+        $product1=[
+            'id'=>1,
+            'title'=>'product 1',
+            'price'=>1000,
+            'qty'=>5
+        ];
+        $product2=[
+            'id'=>1,
+            'title'=>'product 2',
+            'price'=>1000,
+            'qty'=>10
+        ];
+        $product3=[
+            'id'=>1,
+            'title'=>'product 3',
+            'price'=>5000,
+            'qty'=>10
+        ];
+        session(['cart'=>[$product1]]);
+        session()->push('cart',$product2);
+        session(['cart.0.qty'=>7]);
+        session()->forget([1]);
+        session()->forget([0,1]);
+        session()->forget('cart.2');
+
+        session()->flash('test','test flash');
+        redirect()->route('user.login');
+        dump(session('test'));
+
         $posts=Post::with('category')->paginate(5)->withQueryString();
         return view('home',compact('posts'));
     }
